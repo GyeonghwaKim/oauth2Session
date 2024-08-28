@@ -2,6 +2,8 @@ package com.example.TestSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.OAuth2ClientDsl;
+import org.springframework.security.config.annotation.web.OAuth2LoginDsl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -30,6 +32,21 @@ public class SecurityConfig {
         http
                 .csrf((auth)->auth
                         .disable());
+
+
+        //세션 고정 보호
+        http
+                .sessionManagement((auth) -> auth
+                        .sessionFixation().newSession());
+
+
+        //다중 로그인 관리
+        http
+                .sessionManagement((auth) -> auth
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true));
+
+
 
         return http.build();
     }
