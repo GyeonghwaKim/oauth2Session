@@ -2,6 +2,8 @@ package com.example.TestSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.OAuth2ClientDsl;
 import org.springframework.security.config.annotation.web.OAuth2LoginDsl;
@@ -21,7 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth)-> auth
                         .requestMatchers("/","/login","/join","/joinProc").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/my/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/my/**").hasAnyRole("USER")
                         .anyRequest().authenticated()
                 );
 
@@ -62,5 +64,13 @@ public class SecurityConfig {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    //hierarchy
+    @Bean
+    public RoleHierarchy roleHierarchy(){
+        return RoleHierarchyImpl.withDefaultRolePrefix()
+                .role("ADMIN").implies("USER")
+                .build();
     }
 }
