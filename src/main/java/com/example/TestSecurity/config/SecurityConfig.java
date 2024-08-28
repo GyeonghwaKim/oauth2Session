@@ -24,14 +24,21 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 );
 
+
+        //login
         http.formLogin((auth)-> auth
                 .loginPage("/login")
                 .loginProcessingUrl("/loginProc")
                 .permitAll());
 
+
+        //logout
         http
-                .csrf((auth)->auth
-                        .disable());
+                .logout((auth)->auth.logoutUrl("/logout")
+                        .logoutSuccessUrl("/"));
+
+        //csrf
+        // http.csrf((auth)->auth.disable());
 
 
         //세션 고정 보호
