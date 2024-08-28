@@ -2,6 +2,7 @@ package com.example.TestSecurity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.OAuth2ClientDsl;
 import org.springframework.security.config.annotation.web.OAuth2LoginDsl;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,10 +27,8 @@ public class SecurityConfig {
 
 
         //login
-        http.formLogin((auth)-> auth
-                .loginPage("/login")
-                .loginProcessingUrl("/loginProc")
-                .permitAll());
+        http
+                .httpBasic(Customizer.withDefaults());
 
 
         //logout
