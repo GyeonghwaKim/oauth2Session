@@ -1,9 +1,9 @@
-package com.example.TestSecurity;
+package com.example.TestSecurity.dto;
 
 public interface OAuth2Response {
 
     String getProvider();
-    String getProvideId();
+    String getProviderId();
     String getEmail();
     String getName();
 }

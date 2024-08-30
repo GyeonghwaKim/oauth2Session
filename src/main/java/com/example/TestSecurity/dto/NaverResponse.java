@@ -1,22 +1,23 @@
-package com.example.TestSecurity;
+package com.example.TestSecurity.dto;
 
 import java.util.Map;
 
-public class GoogleResponse implements OAuth2Response {
+public class NaverResponse implements OAuth2Response {
 
     private final Map<String,Object> attribute;
-    public GoogleResponse(Map<String, Object> attributes) {
-        this.attribute=attributes;
+
+    public NaverResponse(Map<String, Object> attributes) {
+        this.attribute=(Map<String,Object>) attributes.get("response");
     }
 
     @Override
     public String getProvider() {
-        return "google";
+        return "naver";
     }
 
     @Override
-    public String getProvideId() {
-        return attribute.get("sub").toString();
+    public String getProviderId() {
+        return attribute.get("id").toString();
     }
 
     @Override
