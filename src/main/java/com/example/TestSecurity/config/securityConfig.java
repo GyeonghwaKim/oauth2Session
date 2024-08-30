@@ -1,6 +1,8 @@
 package com.example.TestSecurity.config;
 
+import com.example.TestSecurity.oauth2.CustomClientRegistrationRepo;
 import com.example.TestSecurity.service.CustomOAuth2UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,11 +14,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class securityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomClientRegistrationRepo customClientRegistrationRepo;
 
-    public securityConfig(CustomOAuth2UserService customOAuth2UserService) {
+    public securityConfig(CustomOAuth2UserService customOAuth2UserService, CustomClientRegistrationRepo customClientRegistrationRepo) {
         this.customOAuth2UserService = customOAuth2UserService;
+        this.customClientRegistrationRepo = customClientRegistrationRepo;
     }
 
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((csrf) -> csrf.disable());
@@ -33,6 +38,7 @@ public class securityConfig {
         http.
                 oauth2Login((oauth2) -> oauth2
                         .loginPage("/login")
+                        .clientRegistrationRepository(customClientRegistrationRepo.clientRegistrationRepository())
                         .userInfoEndpoint((userInfoEndpointConfig) ->
                                 userInfoEndpointConfig.userService(customOAuth2UserService)));
 
