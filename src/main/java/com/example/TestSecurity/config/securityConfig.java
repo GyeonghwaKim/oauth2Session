@@ -30,14 +30,18 @@ public class securityConfig {
         http
                 .oauth2Login(Customizer.withDefaults());
 
-        http.oauth2Login((oauth2) -> oauth2
-                .userInfoEndpoint((userInfoEndpointConfig -> userInfoEndpointConfig
-                        .userService(customOAuth2UserService))));
+        http.
+                oauth2Login((oauth2) -> oauth2
+                        .loginPage("/login")
+                        .userInfoEndpoint((userInfoEndpointConfig) ->
+                                userInfoEndpointConfig.userService(customOAuth2UserService)));
 
         http
                 .authorizeHttpRequests((auth)->auth
                         .requestMatchers("/","/oauth2/**","/login/**").permitAll()
                         .anyRequest().authenticated());
+
+
 
         return http.build();
     }
